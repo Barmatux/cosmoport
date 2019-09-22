@@ -1,6 +1,7 @@
 package com.space.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,19 +15,26 @@ public class Ship {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name")
+
+
+    @Column(name = "name",length = 50)
     private String name;
-    @Column(name = "planet")
+
+    @Column(name = "planet",length = 50)
     private String planet;
+
     @Column(name = "shipType")
     @Enumerated(EnumType.STRING)
     private ShipType shipType;
+
     @Column(name = "prodDate")
     private Date prodDate;
     @Column(name = "isUsed")
     private Boolean isUsed = false;
-    @Column(name = "speed")
+
+    @Column(name = "speed",nullable = false)
     private Double speed;
+
     @Column(name = "crewSize")
     private Integer crewSize;
     @Column(name = "rating")

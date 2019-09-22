@@ -1,7 +1,9 @@
 package com.space.repository;
 
 import com.space.model.Ship;
+import com.space.model.ShipType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,6 +13,7 @@ import java.util.List;
 
 @Repository
 public class ShipManager implements ShipManagerInterface {
+
 
     @Autowired
     private ShipRepository repository;
@@ -54,7 +57,10 @@ public class ShipManager implements ShipManagerInterface {
     }
 
     @Override
-    public List<Ship> getListShips(Integer pageNumber, Integer pageSize, String name, String planet) {
-        return repository.findByFilter(pageNumber, pageSize, name, planet);
+    public List<Ship> getListShips(Integer pageNumber, Integer pageSize, String order, String name, String planet,
+                                   Long after, Long before, Integer minCrewSize, Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
+                                   Double maxRating, ShipType shipType, Boolean isUsed) {
+        return repository.findByFilter(pageNumber, pageSize,order, name, planet,after,before,minCrewSize,maxCrewSize,minSpeed,maxSpeed,
+                minRating,maxRating,shipType,isUsed);
     }
 }

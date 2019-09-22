@@ -28,16 +28,18 @@ public class ShipController {
                            @RequestParam(defaultValue = "0") Integer pageNumber,
                            @RequestParam(defaultValue = "3") Integer pageSize,
                            @RequestParam(defaultValue = "ID") String order) {
-//        switch (order){
-//           case  "ID":  order = "id";break;
-//            case  "SPEED": order = "speed";break;
-//            case  "DATE": order = "prodDate";break;
-//            case "RATING": order = "rating";break;
-//        }
-//
-//
-        //return shipService.getListShips(pageNumber, pageSize, order);
-        return shipService.getListShips(pageNumber, pageSize, name, planet);
+        switch (order){
+           case  "ID":  order = "id";break;
+            case  "SPEED": order = "speed";break;
+            case  "DATE": order = "prodDate";break;
+            case "RATING": order = "rating";break;
+        }
+
+
+
+
+        return shipService.getListShips(pageNumber, pageSize,order, name, planet,after,before,minCrewSize,maxCrewSize,minSpeed,maxSpeed,
+                minRating,maxRating,shipType,isUsed);
     }
 
     @RequestMapping(value = "/rest/ships", method = RequestMethod.POST)
@@ -72,8 +74,8 @@ public class ShipController {
 
     @RequestMapping(value = "rest/ships/count", produces = "application/json")
     public @ResponseBody
-    int getShipsCount(Model model) {
-//        model.addAttribute("getShipCount", shipService.getShipCount());
+    int getShipsCount() {
+
         return shipService.getShipCount();
     }
 

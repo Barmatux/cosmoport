@@ -1,6 +1,7 @@
 package com.space.service;
 
 import com.space.model.Ship;
+import com.space.model.ShipType;
 
 import java.util.List;
 
@@ -17,6 +18,8 @@ public interface ShipServiceInterface {
 
     List<Ship> getListShips(Integer pageNumber, Integer pageSize,String order);
 
-    List<Ship> getListShips(Integer pageNumber, Integer pageSize, String name, String planet) ;
+    List<Ship> getListShips(Integer pageNumber, Integer pageSize, String order, String name, String planet,
+                            Long after, Long before, Integer minCrewSize, Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
+                            Double maxRating, ShipType shipType, Boolean isUsed) ;
 
 }

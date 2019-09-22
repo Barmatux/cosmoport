@@ -1,6 +1,7 @@
 package com.space.service;
 
 import com.space.model.Ship;
+import com.space.model.ShipType;
 import com.space.repository.ShipManagerInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,32 +30,34 @@ public class ShipService implements ShipServiceInterface {
     }
 
     @Override
-    @Transactional
+
     public Ship getShipById(Long id) {
         return shipManager.getShipById(id);
     }
 
-    @Override
-    @Transactional
+
     public void updateShip(Ship ship) {
         shipManager.updateShip(ship);
     }
 
     @Override
-    @Transactional
+
     public void delete(Ship ship) {
         shipManager.delete(ship);
     }
 
-    @Transactional
+
     @Override
     public List<Ship> getListShips(Integer pageNumber, Integer pageSize, String order) {
         return shipManager.getListShips(pageNumber, pageSize, order);
     }
 
-    @Transactional
+
     @Override
-    public List<Ship> getListShips(Integer pageNumber, Integer pageSize, String name, String planet) {
-        return shipManager.getListShips(pageNumber, pageSize, name, planet);
+    public List<Ship> getListShips(Integer pageNumber, Integer pageSize, String order, String name, String planet,
+                                   Long after, Long before, Integer minCrewSize, Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
+                                   Double maxRating, ShipType shipType, Boolean isUsed) {
+        return shipManager.getListShips(pageNumber, pageSize,order, name, planet,after,before,minCrewSize,maxCrewSize,minSpeed,maxSpeed,
+                minRating,maxRating,shipType,isUsed);
     }
 }
