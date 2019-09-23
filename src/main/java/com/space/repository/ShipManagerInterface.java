@@ -10,15 +10,19 @@ public interface ShipManagerInterface {
 
     int getShipCount();
 
-    Ship getShipById(Long id);
+    Ship getShipById(Long id) throws NoSuchFieldException;
 
     void updateShip(Ship ship);
 
     void delete(Ship ship);
 
-    List<Ship> getListShips(Integer pageNumber, Integer pageSize, String order);
+
 
     List<Ship> getListShips(Integer pageNumber, Integer pageSize, String order, String name, String planet,
                             Long after, Long before, Integer minCrewSize, Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
                             Double maxRating, ShipType shipType,Boolean isUsed);
+
+    public Long getCountByFilter(Integer pageNumber, Integer pageSize, String order, String name, String planet,
+                                 Long after, Long before, Integer minCrewSize, Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
+                                 Double maxRating, ShipType shipType, Boolean isUsed) ;
 }

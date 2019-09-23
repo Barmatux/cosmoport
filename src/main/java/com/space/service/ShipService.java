@@ -31,7 +31,7 @@ public class ShipService implements ShipServiceInterface {
 
     @Override
 
-    public Ship getShipById(Long id) {
+    public Ship getShipById(Long id) throws NoSuchFieldException {
         return shipManager.getShipById(id);
     }
 
@@ -48,16 +48,28 @@ public class ShipService implements ShipServiceInterface {
 
 
     @Override
-    public List<Ship> getListShips(Integer pageNumber, Integer pageSize, String order) {
-        return shipManager.getListShips(pageNumber, pageSize, order);
-    }
-
-
-    @Override
     public List<Ship> getListShips(Integer pageNumber, Integer pageSize, String order, String name, String planet,
                                    Long after, Long before, Integer minCrewSize, Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
                                    Double maxRating, ShipType shipType, Boolean isUsed) {
-        return shipManager.getListShips(pageNumber, pageSize,order, name, planet,after,before,minCrewSize,maxCrewSize,minSpeed,maxSpeed,
-                minRating,maxRating,shipType,isUsed);
+        return shipManager.getListShips(pageNumber, pageSize, order, name, planet, after, before, minCrewSize, maxCrewSize, minSpeed, maxSpeed,
+                minRating, maxRating, shipType, isUsed);
     }
+
+    @Override
+    public Long getCountByFilter(Integer pageNumber, Integer pageSize, String order, String name, String planet,
+                                 Long after, Long before, Integer minCrewSize, Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
+                                 Double maxRating, ShipType shipType, Boolean isUsed) {
+
+        return shipManager.getCountByFilter(pageNumber, pageSize, order, name, planet, after, before, minCrewSize, maxCrewSize, minSpeed, maxSpeed,
+                minRating, maxRating, shipType, isUsed);
+    }
+
+
+//    @Override
+//    public List<Ship> getListShips(String name, String planet,
+//                                   Long after, Long before, Integer minCrewSize, Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
+//                                   Double maxRating, ShipType shipType, Boolean isUsed) {
+//        return shipManager.getListShips(name, planet, after, before, minCrewSize, maxCrewSize, minSpeed, maxSpeed,
+//                minRating, maxRating, shipType, isUsed);
+//    }
 }

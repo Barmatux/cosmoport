@@ -1,12 +1,16 @@
 package com.space.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
+@Entity()
+@DynamicUpdate
+@DynamicInsert
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "ship")
 public class Ship {
@@ -29,6 +33,7 @@ public class Ship {
 
     @Column(name = "prodDate")
     private Date prodDate;
+
     @Column(name = "isUsed")
     private Boolean isUsed = false;
 

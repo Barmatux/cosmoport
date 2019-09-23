@@ -26,15 +26,15 @@ public class ShipChecker {
         }
     }
 
-    public ShipChecker() throws ParseException {
+    public ShipChecker()  {
     }
 
-    public static void checkShip(Ship ship) throws InCorrectFieldException,  {
+    public static void checkShip(Ship ship) throws InCorrectFieldException {
 
 
-        if(ship.getId()<=0  || ship.getId()==(long)ship.getId()){
-            throw new InCorrectFieldException();
-        }
+//        if(ship.getId()<=0  || ship.getId()==(long)ship.getId()){
+//            throw new InCorrectFieldException();
+//        }
 
         if(ship.getName()==null || ship.getName().isEmpty() || ship.getName().length()>50){
             throw new InCorrectFieldException();
@@ -45,14 +45,17 @@ public class ShipChecker {
         if(ship.getShipType()==null){
             throw new InCorrectFieldException();
         }
+        if(ship.getUsed()==null){
+            ship.setUsed(false);
+        }
 
-        if(ship.getProdDate().before(date1) && ship.getProdDate().after(date2)) {
+        if(ship.getProdDate().before(date1) || ship.getProdDate().after(date2)) {
             throw new InCorrectFieldException();
         }
-        if(ship.getSpeed()==null  || (ship.getSpeed()<0.01 && ship.getSpeed()>0.99 )){
+        if(ship.getSpeed()==null  || ship.getSpeed()<0.01 || ship.getSpeed()>0.99 ){
             throw new InCorrectFieldException();
         }
-        if(ship.getCrewSize()==null  || (ship.getCrewSize()<1 && ship.getSpeed()>9999) ){
+        if(ship.getCrewSize()==null  || ship.getCrewSize()<1 || ship.getCrewSize()>9999 ){
             throw new InCorrectFieldException();
         }
 
@@ -60,14 +63,18 @@ public class ShipChecker {
 
     }
     public static void shipRating(Ship ship){
-        rating = (80*ship.getSpeed()*(ship.getUsed()?0.5:1))/
-                ((date3).getYear()-ship.getProdDate().getYear())+1;
+        Double sp = ship.getSpeed();
+        int ye =date3.getYear();
+        int ye1 = ship.getProdDate().getYear();
+
+        rating = (80*sp*(ship.getUsed()?0.5:1))/
+                ((ye-ye1)+1);
         rating=Math.round(rating*100.0)/100.0;
         ship.setRating(rating);
     }
 
     public static void checkId (Long id) throws InCorrectFieldException {
-        if(id<1){
+        if(id==null || id<1 ){
             throw new InCorrectFieldException();
         }
     }
