@@ -1,8 +1,10 @@
 package com.space.controller;
 
 
+import com.space.exceptions.InCorrectFieldException;
 import com.space.model.Ship;
 import com.space.model.ShipType;
+import com.space.service.ShipChecker;
 import com.space.service.ShipServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,14 +31,11 @@ public class ShipController {
                            @RequestParam(defaultValue = "3") Integer pageSize,
                            @RequestParam(defaultValue = "ID") String order) {
         switch (order){
-           case  "ID":  order = "id";break;
+            case  "ID":  order = "id";break;
             case  "SPEED": order = "speed";break;
             case  "DATE": order = "prodDate";break;
             case "RATING": order = "rating";break;
         }
-
-
-
 
         return shipService.getListShips(pageNumber, pageSize,order, name, planet,after,before,minCrewSize,maxCrewSize,minSpeed,maxSpeed,
                 minRating,maxRating,shipType,isUsed);
@@ -44,6 +43,10 @@ public class ShipController {
 
     @RequestMapping(value = "/rest/ships", method = RequestMethod.POST)
     public String addShip(@RequestBody Ship ship) {
+       try {
+           ShipChecker.checkShip(ship);
+       }  catch (InCorrectFieldException e) { }
+        ShipChecker.shipRating(ship);
         shipService.createShip(ship);
         return "redirect:/";
     }
@@ -58,9 +61,10 @@ public class ShipController {
     @RequestMapping(value = "/rest/ships/{id}", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
     Ship updateShip(@RequestBody Ship ship) {
-//        Ship ship = shipService.getShipById(id);
-//        model.addAttribute("ship", ship);
-//        model.addAttribute("getListShips", shipService.getListShips());
+        try {
+            ShipChecker.checkShip(ship);
+        }  catch (InCorrectFieldException e) { }
+        ShipChecker.shipRating(ship);
         shipService.updateShip(ship);
         return ship;
     }
@@ -68,7 +72,11 @@ public class ShipController {
     @RequestMapping(value = "rest/ships/{id}", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
     Ship getShip(@PathVariable("id") Long id) {
-        // model.addAttribute("ship", shipService.getShipById(id));
+        try {
+            ShipChecker.checkId(id);
+        } catch (InCorrectFieldException e) {
+            e.printStackTrace();
+        }
         return shipService.getShipById(id);
     }
 

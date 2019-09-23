@@ -32,7 +32,7 @@ public class Ship {
     @Column(name = "isUsed")
     private Boolean isUsed = false;
 
-    @Column(name = "speed",nullable = false)
+    @Column(name = "speed")
     private Double speed;
 
     @Column(name = "crewSize")
@@ -96,6 +96,7 @@ public class Ship {
     }
 
     public void setSpeed(Double speed) {
+       speed= Math.round(speed*100.0)/100.0;
         this.speed = speed;
     }
 
@@ -201,8 +202,4 @@ public class Ship {
 //        this.rating = rating;
 //    }
 
-    @Override
-    public String toString() {
-        return "Id" + id + "Name" + name;
-    }
 }
