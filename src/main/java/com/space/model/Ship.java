@@ -3,10 +3,10 @@ package com.space.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity()
 @DynamicUpdate
@@ -19,27 +19,19 @@ public class Ship {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
-    @Column(name = "name",length = 50)
+    @Column(name = "name", length = 50)
     private String name;
-
-    @Column(name = "planet",length = 50)
+    @Column(name = "planet", length = 50)
     private String planet;
-
     @Column(name = "shipType")
     @Enumerated(EnumType.STRING)
     private ShipType shipType;
-
     @Column(name = "prodDate")
     private Date prodDate;
-
     @Column(name = "isUsed")
-    private Boolean isUsed = false;
-
+    private Boolean isUsed;
     @Column(name = "speed")
     private Double speed;
-
     @Column(name = "crewSize")
     private Integer crewSize;
     @Column(name = "rating")
@@ -101,7 +93,7 @@ public class Ship {
     }
 
     public void setSpeed(Double speed) {
-       speed= Math.round(speed*100.0)/100.0;
+        speed = Math.round(speed * 100.0) / 100.0;
         this.speed = speed;
     }
 
@@ -120,91 +112,40 @@ public class Ship {
     public void setRating(Double rating) {
         this.rating = rating;
     }
-//
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        if(name.length()<=50){
-//        this.name = name;}
-//        else System.out.println("too long");
-//    }
-//
-//    public String getPlanet() {
-//        return planet;
-//    }
-//
-//    public void setPlanet(String planet) {
-//        if (planet.length()<=50){
-//        this.planet = planet;}
-//        else System.out.println("Too long");
-//    }
-//
-//    public ShipType getShipType() {
-//        return shipType;
-//    }
-//
-//    public void setShipType(ShipType shipType) {
-//        if(shipType!=null) {
-//        this.shipType = shipType; }
-//        else System.out.println("Wrong type");
-//    }
-//
-//    public Date getProdDate() {
-//        return prodDate;
-//    }
-//
-//    public void setProdDate(Date prodDate) {
-//        if(prodDate.after(new Date("31.12.2799")) && prodDate.before(new Date("01.01.3020"))) {
-//        this.prodDate = prodDate;}
-//        else System.out.println("Incorrect date");
-//    }
-//
-//    public Boolean getUsed() {
-//        return isUsed;
-//    }
-//
-//    public void setUsed(Boolean used) {
-//        isUsed = used;
-//    }
-//
-//    public Double getSpeed() {
-//        return speed;
-//    }
-//
-//    public void setSpeed(Double speed) {
-//        if(Math.round(speed*100.0)/100.0>=0.01 && Math.round(speed*100.0)/100.0<=0.99){
-//        this.speed = speed;}
-//        else System.out.println("Incorrect speed");
-//    }
-//
-//    public Integer getCrewSize() {
-//        return crewSize;
-//    }
-//
-//    public void setCrewSize(Integer crewSize) {
-//        if(crewSize>=1 && crewSize<=9999) {
-//        this.crewSize = crewSize; }
-//        else System.out.println("Incorrect crew size");
-//    }
-//
-//    public Double getRating() {
-//        return rating;
-//    }
-//
-//    public void setRating(Double rating) {
-//        rating = (80*speed*(isUsed?0.5:1))/2;// посмотреть как правильно работать с датами!
-//        rating=Math.round(rating*100.0)/100.0;
-//        this.rating = rating;
-//    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ship ship = (Ship) o;
+        return Objects.equals(id, ship.id) &&
+                Objects.equals(name, ship.name) &&
+                Objects.equals(planet, ship.planet) &&
+                shipType == ship.shipType &&
+                Objects.equals(prodDate, ship.prodDate) &&
+                Objects.equals(isUsed, ship.isUsed) &&
+                Objects.equals(speed, ship.speed) &&
+                Objects.equals(crewSize, ship.crewSize) &&
+                Objects.equals(rating, ship.rating);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, planet, shipType, prodDate, isUsed, speed, crewSize, rating);
+    }
+
+    @Override
+    public String toString() {
+        return "Ship{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", planet='" + planet + '\'' +
+                ", shipType=" + shipType +
+                ", prodDate=" + prodDate +
+                ", isUsed=" + isUsed +
+                ", speed=" + speed +
+                ", crewSize=" + crewSize +
+                ", rating=" + rating +
+                '}';
+    }
 }

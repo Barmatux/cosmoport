@@ -1,5 +1,6 @@
 package com.space.service;
 
+import com.space.exceptions.NoSuchId;
 import com.space.model.Ship;
 import com.space.model.ShipType;
 
@@ -10,7 +11,7 @@ public interface ShipServiceInterface {
 
     int getShipCount();
 
-    Ship getShipById(Long id) throws NoSuchFieldException;
+    Ship getShipById(Long id) throws NoSuchId;
 
     void updateShip(Ship ship);
 
@@ -22,7 +23,7 @@ public interface ShipServiceInterface {
                             Double maxRating, ShipType shipType, Boolean isUsed);
 
 
-    public Long getCountByFilter(Integer pageNumber, Integer pageSize, String order, String name, String planet,
-                                 Long after, Long before, Integer minCrewSize, Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
+    public Long getCountByFilter(String name, String planet, Long after, Long before, Integer minCrewSize,
+                                 Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
                                  Double maxRating, ShipType shipType, Boolean isUsed);
 }

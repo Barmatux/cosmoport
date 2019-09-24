@@ -20,6 +20,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("com.space.service")
+@ComponentScan("com.space.repository")
 @EnableJpaRepositories(basePackages = "com.space.repository")
 public class TestDataSourceConfig {
 

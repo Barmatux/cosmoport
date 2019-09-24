@@ -1,8 +1,9 @@
 package com.space.service;
 
+import com.space.exceptions.NoSuchId;
 import com.space.model.Ship;
 import com.space.model.ShipType;
-import com.space.repository.ShipManagerInterface;
+import com.space.repository.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,37 +14,36 @@ import java.util.List;
 public class ShipService implements ShipServiceInterface {
 
     @Autowired
-    private ShipManagerInterface shipManager;
+    private ShipRepository shipRepository;
 
 
     @Override
     @Transactional
     public void createShip(Ship ship) {
-        shipManager.createShip(ship);
+        shipRepository.save(ship);
     }
 
     @Override
     @Transactional
     public int getShipCount() {
-        return shipManager.getShipCount();
-
+        return (int) shipRepository.count();
     }
 
     @Override
 
-    public Ship getShipById(Long id) throws NoSuchFieldException {
-        return shipManager.getShipById(id);
+    public Ship getShipById(Long id) {
+        return shipRepository.findById(id).orElseThrow(NoSuchId::new);
     }
 
 
     public void updateShip(Ship ship) {
-        shipManager.updateShip(ship);
+        shipRepository.saveAndFlush(ship);
     }
 
     @Override
 
     public void delete(Ship ship) {
-        shipManager.delete(ship);
+        shipRepository.deleteById(ship.getId());
     }
 
 
@@ -51,25 +51,18 @@ public class ShipService implements ShipServiceInterface {
     public List<Ship> getListShips(Integer pageNumber, Integer pageSize, String order, String name, String planet,
                                    Long after, Long before, Integer minCrewSize, Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
                                    Double maxRating, ShipType shipType, Boolean isUsed) {
-        return shipManager.getListShips(pageNumber, pageSize, order, name, planet, after, before, minCrewSize, maxCrewSize, minSpeed, maxSpeed,
+        return shipRepository.findByFilter(pageNumber, pageSize, order, name, planet, after, before, minCrewSize, maxCrewSize, minSpeed, maxSpeed,
                 minRating, maxRating, shipType, isUsed);
     }
 
     @Override
-    public Long getCountByFilter(Integer pageNumber, Integer pageSize, String order, String name, String planet,
-                                 Long after, Long before, Integer minCrewSize, Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
+    public Long getCountByFilter(String name, String planet, Long after, Long before, Integer minCrewSize,
+                                 Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
                                  Double maxRating, ShipType shipType, Boolean isUsed) {
 
-        return shipManager.getCountByFilter(pageNumber, pageSize, order, name, planet, after, before, minCrewSize, maxCrewSize, minSpeed, maxSpeed,
+        return shipRepository.getCountByFilter(name, planet, after, before, minCrewSize, maxCrewSize, minSpeed, maxSpeed,
                 minRating, maxRating, shipType, isUsed);
     }
 
 
-//    @Override
-//    public List<Ship> getListShips(String name, String planet,
-//                                   Long after, Long before, Integer minCrewSize, Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
-//                                   Double maxRating, ShipType shipType, Boolean isUsed) {
-//        return shipManager.getListShips(name, planet, after, before, minCrewSize, maxCrewSize, minSpeed, maxSpeed,
-//                minRating, maxRating, shipType, isUsed);
-//    }
 }

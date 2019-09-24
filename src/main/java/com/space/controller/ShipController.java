@@ -30,7 +30,7 @@ public class ShipController {
                            @RequestParam(defaultValue = "0") Integer pageNumber,
                            @RequestParam(defaultValue = "3") Integer pageSize,
                            @RequestParam(defaultValue = "ID") String order) {
-//         String s =new ShipOrder(order).getFieldName();
+
         switch (order) {
             case "ID":
                 order = "id";
@@ -50,11 +50,12 @@ public class ShipController {
                 minRating, maxRating, shipType, isUsed);
     }
 
-    @RequestMapping(value = "/rest/ships", method = RequestMethod.POST,produces = "application/json")
-    public @ResponseBody Ship addShip(@RequestBody Ship ship) throws InCorrectFieldException {
-       ShipChecker.checkShip(ship);
-       ShipChecker.shipRating(ship);
-       shipService.createShip(ship);
+    @RequestMapping(value = "/rest/ships", method = RequestMethod.POST, produces = "application/json")
+    public @ResponseBody
+    Ship addShip(@RequestBody Ship ship) throws InCorrectFieldException {
+        ShipChecker.checkShip(ship);
+        ShipChecker.shipRating(ship);
+        shipService.createShip(ship);
         return ship;
     }
 
@@ -68,21 +69,25 @@ public class ShipController {
 
     @RequestMapping(value = "/rest/ships/{id}", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
-    Ship updateShip(@PathVariable Long id,@RequestBody Ship ship) throws InCorrectFieldException, NoSuchFieldException {
+    Ship updateShip(@PathVariable Long id, @RequestBody Ship ship) throws InCorrectFieldException {
+        if (id <= 0) {
+            throw new InCorrectFieldException();
+        }
 
-        shipService.getShipById(id);
-        ship.setId(id);
-        shipService.updateShip(ship);
-       ShipChecker.checkShip(ship);
-       ShipChecker.shipRating(ship);
-        return ship;
+        Ship oldShip = shipService.getShipById(id);
+        if (ShipChecker.updateShipData(oldShip, ship)) {
+            ShipChecker.checkShip(oldShip);
+            ShipChecker.shipRating(oldShip);
+            shipService.updateShip(oldShip);
+        }
+        return oldShip;
     }
 
     @RequestMapping(value = "rest/ships/{id}", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
-    Ship getShip(@PathVariable("id") Long id) throws NoSuchFieldException,InCorrectFieldException {
+    Ship getShip(@PathVariable("id") Long id) throws NoSuchFieldException, InCorrectFieldException {
 
-            ShipChecker.checkId(id);
+        ShipChecker.checkId(id);
 
         return shipService.getShipById(id);
     }
@@ -92,27 +97,9 @@ public class ShipController {
     int getShipsCount(@RequestParam(required = false) String name,
                       String planet, Long after, Long before, Integer minCrewSize,
                       Integer maxCrewSize, Double minSpeed, Double maxSpeed, Double minRating,
-                      Double maxRating, ShipType shipType, Boolean isUsed,
-                      @RequestParam(defaultValue = "0") Integer pageNumber,
-                      @RequestParam(defaultValue = "3") Integer pageSize,
-                      @RequestParam(defaultValue = "ID") String order) {
+                      Double maxRating, ShipType shipType, Boolean isUsed) {
 
-        switch (order) {
-            case "ID":
-                order = "id";
-                break;
-            case "SPEED":
-                order = "speed";
-                break;
-            case "DATE":
-                order = "prodDate";
-                break;
-            case "RATING":
-                order = "rating";
-                break;
-        }
-
-        return shipService.getCountByFilter(pageNumber, pageSize, order, name, planet, after, before, minCrewSize, maxCrewSize, minSpeed, maxSpeed,
+        return shipService.getCountByFilter(name, planet, after, before, minCrewSize, maxCrewSize, minSpeed, maxSpeed,
                 minRating, maxRating, shipType, isUsed).intValue();
     }
 
