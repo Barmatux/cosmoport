@@ -31,20 +31,21 @@ public class ShipController {
                            @RequestParam(defaultValue = "3") Integer pageSize,
                            @RequestParam(defaultValue = "ID") String order) {
 
-        switch (order) {
-            case "ID":
-                order = "id";
-                break;
-            case "SPEED":
-                order = "speed";
-                break;
-            case "DATE":
-                order = "prodDate";
-                break;
-            case "RATING":
-                order = "rating";
-                break;
-        }
+      order =  ShipOrder.valueOf(order).getFieldName();
+//        switch (order) {
+//            case "ID":
+//                order = "id";
+//                break;
+//            case "SPEED":
+//                order = "speed";
+//                break;
+//            case "DATE":
+//                order = "prodDate";
+//                break;
+//            case "RATING":
+//                order = "rating";
+//                break;
+//        }
 
         return shipService.getListShips(pageNumber, pageSize, order, name, planet, after, before, minCrewSize, maxCrewSize, minSpeed, maxSpeed,
                 minRating, maxRating, shipType, isUsed);
